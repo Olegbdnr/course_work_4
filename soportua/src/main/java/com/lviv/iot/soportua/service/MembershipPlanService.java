@@ -1,12 +1,18 @@
 package com.lviv.iot.soportua.service;
 
 import com.lviv.iot.soportua.domain.MembershipPlan;
+import com.lviv.iot.soportua.repository.MembershipPlanRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 
 @Service
 public class MembershipPlanService extends ServiceCRUD<MembershipPlan, Long>{
+
+    public MembershipPlanService(MembershipPlanRepository repository) {
+        super(repository);
+    }
+
     @Override
     protected void updateFields(MembershipPlan existing, MembershipPlan newEntity) {
         existing.setName(newEntity.getName());

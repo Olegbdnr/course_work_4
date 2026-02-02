@@ -1,13 +1,19 @@
 package com.lviv.iot.soportua.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public abstract class ServiceCRUD<T, ID> {
 
-    protected JpaRepository<T, ID> repository;
+    protected final JpaRepository<T, ID> repository;
+
+    protected ServiceCRUD(JpaRepository<T, ID> repository) {
+        this.repository = repository;
+    }
 
     public T create(T entity) {
         return repository.save(entity);
