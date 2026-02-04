@@ -121,5 +121,5 @@ public class ClientController {
         }
         return ResponseEntity.notFound().build();
     }
-    
+
 }
