@@ -1,6 +1,7 @@
 package com.lviv.iot.soportua.controller;
 
 import com.lviv.iot.soportua.domain.MembershipPlan;
+import com.lviv.iot.soportua.dto.MembershipPlanDto;
 import com.lviv.iot.soportua.service.MembershipPlanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,25 +19,29 @@ public class MembershipPlanController {
     }
 
     @GetMapping
-    public List<MembershipPlan> getAll() {
-        return service.getAll();
+    public List<MembershipPlanDto> getAll() {
+        return service.getAll().stream().map(MembershipPlanDto::toDto).toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MembershipPlan> getById(@PathVariable Long id) {
+    public ResponseEntity<MembershipPlanDto> getById(@PathVariable Long id) {
         return service.getById(id)
+                .map(MembershipPlanDto::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public MembershipPlan create(@RequestBody MembershipPlan plan) {
-        return service.create(plan);
+    public MembershipPlanDto create(@RequestBody MembershipPlanDto planDto) {
+        MembershipPlan plan = MembershipPlanDto.toEntity(planDto);
+        return MembershipPlanDto.toDto(service.create(plan));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MembershipPlan> update(@PathVariable Long id, @RequestBody MembershipPlan plan) {
+    public ResponseEntity<MembershipPlanDto> update(@PathVariable Long id, @RequestBody MembershipPlanDto planDto) {
+        MembershipPlan plan = MembershipPlanDto.toEntity(planDto);
         return service.update(id, plan)
+                .map(MembershipPlanDto::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

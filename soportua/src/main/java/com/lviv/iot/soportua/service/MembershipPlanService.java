@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 
 @Service
-public class MembershipPlanService extends ServiceCRUD<MembershipPlan, Long>{
+public class MembershipPlanService extends ServiceCRUD<MembershipPlan, Long, MembershipPlanRepository>{
 
     public MembershipPlanService(MembershipPlanRepository repository) {
         super(repository);

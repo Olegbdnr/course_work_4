@@ -1,13 +1,42 @@
 package com.lviv.iot.soportua.service;
 
+import com.lviv.iot.soportua.domain.Client;
 import com.lviv.iot.soportua.domain.Membership;
+import com.lviv.iot.soportua.domain.MembershipPlan;
+import com.lviv.iot.soportua.repository.ClientRepository;
+import com.lviv.iot.soportua.repository.MembershipPlanRepository;
 import com.lviv.iot.soportua.repository.MembershipRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
-public class MembershipService extends ServiceCRUD<Membership, Long>{
+import java.util.List;
 
-    protected MembershipService(MembershipRepository repository) {
+@Service
+public class MembershipService extends ServiceCRUD<Membership, Long, MembershipRepository>{
+    private final MembershipPlanRepository membershipPlanRepository;
+    private final ClientRepository clientRepository;
+
+    protected MembershipService(MembershipRepository repository,
+                                MembershipPlanRepository membershipPlanRepository,
+                                ClientRepository clientRepository) {
         super(repository);
+        this.membershipPlanRepository = membershipPlanRepository;
+        this.clientRepository = clientRepository;
+    }
+
+    public Membership create(Membership membership, Long membershipPlanId, Long clientId) {
+        MembershipPlan membershipPlan = membershipPlanRepository
+                .findById(membershipPlanId)
+                .orElseThrow();
+        Client client = clientRepository
+                .findById(clientId)
+                .orElseThrow();
+        membership.setMembershipPlan(membershipPlan);
+        membership.setClient(client);
+        return repository.save(membership);
+    }
+
+    public List<Membership> getAllByClientId(Long clientId) {
+        return repository.findAllByClient_Id(clientId);
     }
 
     @Override

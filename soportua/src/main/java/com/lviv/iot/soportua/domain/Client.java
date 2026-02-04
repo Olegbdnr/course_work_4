@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,5 +39,5 @@ public class Client {
     private int bonusBalance;
 
     @OneToMany(mappedBy = "client")
-    private List<Membership> memberships;
+    private List<Membership> memberships = new ArrayList<>();
 }

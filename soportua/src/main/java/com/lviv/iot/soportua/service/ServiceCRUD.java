@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public abstract class ServiceCRUD<T, ID> {
+public abstract class ServiceCRUD<T, ID, R extends JpaRepository<T, ID>> {
 
-    protected final JpaRepository<T, ID> repository;
+    protected final R repository;
 
-    protected ServiceCRUD(JpaRepository<T, ID> repository) {
+    protected ServiceCRUD(R repository) {
         this.repository = repository;
     }
 
